@@ -1,0 +1,29 @@
+pipeline {
+    agent { label 'NODE_WITH_KEY' }
+    stages {
+        stage ('Clone') {
+            steps {
+                git branch: 'master', url: "https://github.com/spring-projects/spring-petclinic.git"
+            }
+        }
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: "MAVEN_3.6.3", // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId:MAV "JFROG_ID",
+                )
+            }
+        }
+         stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "JFROG_ID",
+                    url: "https://suresh32.jfrog.io",
+                    credentialsId: "JFROG_ID"
+                )
+            }
+        }       
+    }
+}

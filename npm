@@ -1,0 +1,18 @@
+pipeline{
+    agent { label 'UBUNTU' }
+    stages{
+        stage('cloning') {
+          steps {
+            git url: 'https://github.com/GitPracticeRepo/js-e2e-express-server.git',
+            branch: 'main'
+            }
+        }
+        stage('building by shell') {
+          steps {
+            sh 'export PATH="/home/ubuntu/.nvm/versions/node/v16.17.1/bin:$PATH"'
+            sh 'npm install'
+            sh 'npm run build'
+            }
+        } 
+    }
+}

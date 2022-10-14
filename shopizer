@@ -1,0 +1,15 @@
+pipeline {
+    agent { label 'NODE_WITH_KEY' }
+    stages{
+        stage('git clone') {
+          steps {
+            git branch: 'master','url': 'https://github.com/shopizer-ecommerce/shopizer.git'
+            }
+        }
+        stage('building shopizer') {
+          steps {
+            sh '/usr/share/maven mvn package'
+            }
+        }  
+    }
+}

@@ -1,16 +1,15 @@
 pipeline {
-    agent { label '.net6' }
-    stages {
-        stage ('vcs') {
-            steps {
-                git branch: 'master', url:'https://github.com/GitPracticeRepo/dotnetcore-docs-hello-world.git'
+    agent { label 'NODE_WITH_KEY' }
+    stages{
+        stage('git clone') {
+          steps {
+            git branch: 'master','url': 'https://github.com/openmrs-archive/openmrs-example-helloworldapp.git'
             }
         }
-        stage (build) {
-            steps {
-                sh 'dotnet build dotnetcoresample.csproj'
-                sh 'dotnet publish dotnetcoresample.csproj'
+        stage('building openmrs') {
+          steps {
+            sh '/opt/apache-maven-3.8.6/bin/mvn clean package'
             }
-        }
-    }
+        }  
+    }    
 }
